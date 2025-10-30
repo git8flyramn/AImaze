@@ -22,18 +22,18 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 		int MHandle = LoadGraph("block.png");
 		const int IMAGE_SIZE = 32;
 		                     //X 0 1 2 3
-		//int map[MapX][MapY] = { {1,1,1,1,1,1,1,1,1,1,1},
+		//int map[MapX][MapY] ={{1,1,1,1,1,1,1,1,1,1,1},
 		//	/*ì¸å˚(è„)*/   /*Y*/{1,0,0,0,0,0,0,0,0,0,1},
-		//						{0,0,0,0,0,0,0,0,0,0,1},
-		//						{1,1,1,0,1,1,1,1,1,0,1},
-		//						{1,0,1,0,1,0,0,0,1,0,1},//â∫
-		//						{1,0,1,0,1,0,1,1,1,0,1},
-		//						{1,0,1,0,1,0,0,0,0,0,1},
-		//						{1,0,1,0,1,0,1,1,1,0,1},
-		//						{1,0,1,0,1,0,1,0,0,0,1},
-		//						{1,0,1,0,1,0,1,1,1,1,1},
-		//						{1,0,0,0,0,0,0,0,0,0,0},
-		//						{1,1,1,1,1,1,1,1,1,1,1}, };
+		//						{1,0,0,0,0,0,0,0,0,0,1},
+		//						{1,0,0,0,0,0,0,0,0,0,1},
+		//						{1,0,0,0,0,0,0,0,1,0,1},//â∫
+		//						{1,0,0,0,0,0,0,0,0,0,1},
+		//						{1,0,0,0,0,0,0,0,0,0,1},
+		//						{1,0,0,0,0,0,0,0,0,0,1},
+		//						{1,0,0,0,0,0,0,0,0,0,1},
+		//						{1,0,0,0,0,0,0,0,0,0,1},
+		//						{1,0,0,0,0,0,0,0,0,0,1},
+		//						{1,1,1,1,1,1,1,1,1,1,1},};
 		int map[MapX][MapY];
 			
 			              
@@ -60,8 +60,7 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 				for (int i = 0; i < WIN_WIDTH; i++)
 				{
 					DrawGraph(0, IMAGE_SIZE * i, MHandle, TRUE); //ç∂
-					DrawGraph(WIN_WIDTH - IMAGE_SIZE,WIN_HIEGHT,MHandle,TRUE);//âE
-					
+					DrawGraph(WIN_WIDTH - 32,WIN_HIEGHT - 32 * i,MHandle,TRUE);//âE
 				}
 				
 			ScreenFlip();
