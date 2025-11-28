@@ -36,15 +36,41 @@ void maze::Initialize()
 void maze::Draw()
 {
 	int WallColor = GetColor(0, 255, 0);
-	int LoadColor = GetColor(0, 0, 255);
+	int LoadColor = GetColor(255, 255, 255);
+	int GoalColor = GetColor(255, 0, 0);
 
 	int x_offset = (WIN_WIDTH - MapColom * DrawSize) / 2;
 	int y_offset = (WIN_HEIGHT - MapLow * DrawSize) / 2;
+	for (int y = 0; y < MapLow; y++)
+	{
+		for (int x = 0; x < MapColom; x++)
+		{
+			int x1 = x_offset + x * DrawSize;
+			int y1 = y_offset + y * DrawSize;
+			int x2 = x1 + DrawSize;
+			int y2 = y1 + DrawSize;
+
+			if (map[y][x] == wall)
+			{
+				DrawBox(x1, y1, x2, y2, WallColor, TRUE);
+			}
+			else
+			{
+				DrawBox(x1, y1, x2, y2, LoadColor, TRUE);
+			}
+			if (x == 0 && y == 1)
+			{
+				DrawBox(x1, y1, x2, y2, GoalColor, TRUE);
+			}
+		}
+	}
 }
 
 void maze::CreateMaze()
 {
+
 	srand((unsigned int)time(NULL));
+	Initialize();
 	for (int y = 1; y < MapLow - 1; y += 2)
 	{
 		std::vector<std::pair<int, int>> run_set;
