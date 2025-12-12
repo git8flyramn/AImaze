@@ -6,7 +6,7 @@
 int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	SetWindowText("–À˜H");
-	SetGraphMode(1000, 800, 32);
+	SetGraphMode(640, 480, 32);
 	ChangeWindowMode(TRUE);
 	if (DxLib_Init() == -1)
 	{
