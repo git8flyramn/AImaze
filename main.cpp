@@ -6,7 +6,7 @@
 int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	SetWindowText("–À˜H");
-	SetGraphMode(640, 480, 32);
+	SetGraphMode(600, 480, 32);
 	ChangeWindowMode(TRUE);
 	if (DxLib_Init() == -1)
 	{
@@ -16,9 +16,9 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	SetDrawScreen(DX_SCREEN_BACK);
 	maze* Maze = new maze();
 	
+	
+	
 	Maze->CreateMaze();
-	
-	
 
 	while (1)                    
 	{

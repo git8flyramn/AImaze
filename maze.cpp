@@ -5,19 +5,22 @@
 #include <utility>
 namespace
 {
-	const int MapLow = 25;
-	const int MapColom = 33;
-	const int DrawSize = 18;
+	const int MapLow = 15;
+	const int MapColom = 15;
+	const int DrawSize = 20;
 	int map[MapLow][MapColom];
 	const int Wall = 1;
 	const int Load = 0;
+	int crave_load;
+	int r;
+	int x, y;
 	//int crave_east;
 }
 
 maze::maze()
 {
 	WIN_WIDTH = 640;
-	WIN_HEIGHT = 480;
+	WIN_HEIGHT = 320;
 }
 
 maze::~maze()
@@ -33,16 +36,24 @@ void maze::Initialize()
 		{
 			map[y][x] = Wall;
 		}
-	}
+    }
+	for (int x = 0; x < MapColom; x++)
+	{
+		map[0][x] = Load;
+		map[MapLow - 1][x] = Load;
+    }
 
+	for (int y = 0; y < MapLow; y++)
+	{
+		map[y][0] = Load;
+		map[y][MapColom -1] = Load;
+	}
 }
 
 void maze::Draw()
 {
-	int WallColor = GetColor(0, 0, 255);
+	int WallColor = GetColor(255,  0,0);
 	int LoadColor = GetColor(255, 255, 255);
-	int GoalColor = GetColor(255, 0, 0);
-	int StartColor = GetColor(255, 0, 0);
 	int x_offset = (WIN_WIDTH - MapColom * DrawSize) / 2;
 	int y_offset = (WIN_HEIGHT - MapLow * DrawSize) / 2;
 
@@ -55,60 +66,134 @@ void maze::Draw()
 			int x2 = x1 + DrawSize;
 			int y2 = y1 + DrawSize;
 
-			if (map[y][x] == Load)
+			if (map[y][x] == Wall)
 			{
-				DrawBox(x1, y1, x2, y2, LoadColor, TRUE);
+				DrawBox(x1 + 5, y1 + 5, x2 + 5, y2 + 5, LoadColor, TRUE);
 			}
-			else 
+			else if(map[y][x] == Load)
 			{
-				DrawBox(x1, y1, x2, y2,WallColor, TRUE);
+				DrawBox(x1 + 5, y1+ 5, x2 + 5, y2 + 5,WallColor, TRUE);
 			}
-			if (x == 0 && y == 1)
-			{
-				DrawBox(x1, y1, x2, y2, StartColor, TRUE);
-			}
+			
 		}
 	}
 }
 
 void maze::CreateMaze()
 {
-	Initialize();
-	srand((unsigned int)time(NULL));
-	//crave_east = rand() % 2;
-	
-	for (int y = 1; y < MapLow - 1; y += 2)
+	y = 2;
+	srand((unsigned)time(NULL));
+	for (int x = 2; x < MapColom-1; x += 2)
 	{
-		std::vector<std::pair<int, int>> run_set;
-	   
-		for (int x = 1; x < MapColom - 1; x += 2)
+		r = (rand() % 12) + 1;
+		map[y][x] = Wall;
+
+		if (r >= 1 && r <= 3)
 		{
-			map[y][x] = Load;
-			run_set.push_back({ y,x });
-
-			//Å‰E’[‚Å‚Í‚È‚¢(•Ç‚Æ“¯‚¶‚Å‚Í‚È‚¢)
-			if (x < MapColom - 2 && y < MapLow - 2)
+			if (map[y - 1][x] == Load)
 			{
-				if (rand() % 2 == 0)
-				{
-					map[y][x + 1] = Load;
-					continue;
-				}
+				map[y - 1][x] = Wall;
 			}
-			int run_size = run_set.size();
-			if (run_size > 0)
+			else if (map[y - 1][x] == Wall)
 			{
-				int index = rand() % run_size;
-				int north_y = run_set[index].first;
-				int north_x = run_set[index].second;
-
-				if (north_y > 1)
-				{
-					map[north_y - 1][north_x] = Load;
-				}
+				x = x - 2;
 			}
-			run_set.clear();
+		}
+
+		if (r >= 4 && r <= 6)
+		{
+			if (map[y + 1][x] == Load)
+			{
+				map[y + 1][x] = Wall;
+			}
+			else if (map[y + 1][x] == Wall)
+			{
+				x = x - 2;
+			}
+		}
+		if (r >= 7 && r <= 9)
+		{
+			if (map[y + 1][x] == Load)
+			{
+				map[y][x - 1] = Wall;
+			}
+			else if (map[y][x - 1] == Wall)
+			{
+				x = x - 2;
+			}
+		}
+
+		if (r >= 10 && r <= 12)
+		{
+			if (map[y][x + 1] == Load)
+			{
+				map[y][x + 1] = Wall;
+			}
+			else if (map[y][x + 1] == Wall)
+			{
+				x = x - 2;
+			}
 		}
 	}
 	
+
+	for (int y = 4; y < MapLow - 1; y += 2)
+	{
+		for (int x = 2; x < MapColom - 1; x += 2)
+		{
+			r = (rand() % 12) + 1;
+			map[y][x] = Wall;
+
+			if (r >= 1 && r <= 3)
+			{
+				if (map[y - 1][x] == Load)
+				{
+					map[y - 1][x] = Wall;
+				}
+				else if (map[y - 1][x] == Wall)
+				{
+					x = x - 2;
+				}
+			}
+
+			if (r >= 4 && r <= 6)
+			{
+				if (map[y + 1][x] == Load)
+				{
+					map[y + 1][x] = Wall;
+				}
+				else if (map[y + 1][x] == Wall)
+				{
+					x = x - 2;
+				}
+			}
+			if (r >= 7 && r <= 9)
+			{
+				if (map[y + 1][x] == Load)
+				{
+					map[y][x - 1] = Wall;
+				}
+				else if (map[y][x - 1] == Wall)
+				{
+					x = x - 2;
+				}
+			}
+
+			if (r >= 10 && r <= 12)
+			{
+				if (map[y][x + 1] == Load)
+				{
+					map[y][x + 1] = Wall;
+				}
+				else if (map[y][x + 1] == Wall)
+				{
+					x = x - 2;
+				}
+			}
+		}
+	}
+	map[0][1] = Load;
+	map[MapColom - 1][MapLow - 2] = Load;
+
+
 }
