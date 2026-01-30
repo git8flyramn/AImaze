@@ -1,6 +1,6 @@
 #include "DxLib.h"
 #include "stdlib.h"
-#include "time.h"
+#include <ctime>
 #include "maze.h"
 // ƒvƒƒOƒ‰ƒ€‚Í WinMain ‚©‚çŽn‚Ü‚è‚Ü‚·
 int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -17,12 +17,13 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	maze* Maze = new maze();
 	
 	
-	
-	Maze->CreateMaze();
+	//–À˜H¶¬
+	Maze->Initialize();
 
 	while (1)                    
 	{
 		ClearDrawScreen();
+		//–À˜H•`‰æ
 		Maze->Draw();
 		ScreenFlip();
 		WaitTimer(16);

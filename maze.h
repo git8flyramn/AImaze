@@ -8,7 +8,4 @@ public:
 	void Initialize();
 	void Draw();
 	void CreateMaze();
-	int WIN_WIDTH;
-	int WIN_HEIGHT;
-
 };
