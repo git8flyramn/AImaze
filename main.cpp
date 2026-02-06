@@ -14,16 +14,18 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	}
 	SetBackgroundColor(0, 0, 0);
 	SetDrawScreen(DX_SCREEN_BACK);
-	maze* Maze = new maze();
+	maze* Maze = new maze(41,41);
 	
 	
 	//–À˜H¶¬
+	
 	Maze->Initialize();
-
 	while (1)                    
 	{
 		ClearDrawScreen();
 		//–À˜H•`‰æ
+	
+		Maze->CreateMaze();
 		Maze->Draw();
 		ScreenFlip();
 		WaitTimer(16);
