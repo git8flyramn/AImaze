@@ -10,6 +10,7 @@ maze::maze(int w, int h)
 	WIDTH = w;
 	HEIGHT = h;
 	Maze.assign(HEIGHT, std::vector<int>(WIDTH, HEIGHT));
+	
 }
 
 maze::~maze()
@@ -33,9 +34,11 @@ void maze::Initialize()
 
 void maze::Draw()
 {
+	Start start;
 	int WallColor = GetColor(0,255,0);
 	int LoadColor = GetColor(0, 0, 255);
-
+	int StartColor = GetColor(0, 255, 255);
+	int GoalColor = GetColor(255, 0, 0);
 	for (int y = 0; y < WIDTH; y++)
 	{
 		for (int x = 0; x < HEIGHT; x++)
@@ -48,11 +51,16 @@ void maze::Draw()
 
 			if (Maze[y][x] == Wall)
 			{
-				DrawBox(x1 * DrawSize, y1 * DrawSize, DrawSize + (x2 + 1), DrawSize + (y2 + 1), WallColor,TRUE);
+				DrawBox(x1 * DrawSize, y1 * DrawSize, DrawSize + (x2 + 2), DrawSize + (y2 + 2), WallColor,TRUE);
 			}
 			else if(Maze[y][x] == Load)
 			{
-				DrawBox(x1 * DrawSize, y1 * DrawSize, DrawSize + (x2 + 1), DrawSize + (y2 + 1), LoadColor, TRUE);
+				DrawBox(x1 * DrawSize, y1 * DrawSize, DrawSize + (x2 + 2), DrawSize + (y2 + 2), LoadColor, TRUE);
+			}
+
+			if (x == start.x && y == start.y)
+			{
+				DrawBox(x1,y1,x2,y2,StartColor, TRUE);
 			}
 		}
 	}

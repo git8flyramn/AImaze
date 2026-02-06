@@ -1,6 +1,13 @@
 #pragma once
 #include "DxLib.h"
 #include <vector>
+
+
+struct Start
+{
+	int x;
+	int y;
+};
 class maze
 {
 public:
