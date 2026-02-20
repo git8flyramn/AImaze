@@ -3,6 +3,11 @@
 #include <vector>
 
 
+struct Goal
+{
+	int x;
+	int y;
+};
 struct Start
 {
 	int x;
@@ -20,7 +25,6 @@ private:
 	int WIDTH;
     int HEIGHT;
 	std::vector<std::vector<int>> Maze;
-	int MAZE_SIZE;
 	int DrawSize;
 	int Wall;
     int Load;

@@ -19,12 +19,16 @@ maze::~maze()
 
 void maze::Initialize()
 {
-	for (int y = 0; y < HEIGHT; ++y)
+	
+	for (int y = 0; y < HEIGHT; y++)
 	{
-		for (int x = 0; x < WIDTH; ++x)
+		for (int x = 0; x < WIDTH; x++)
 		{
-			
 			if (y == 0 || y == HEIGHT - 1 || x == 0 || x == WIDTH - 1)
+			{
+				Maze[y][x] = Wall;
+			}
+			else if (y % 2 == 0 && x % 2 == 0)
 			{
 				Maze[y][x] = Wall;
 			}
@@ -39,24 +43,28 @@ void maze::Initialize()
 void maze::Draw()
 {
 	Start start = {1,5};
+	Goal goal = { HEIGHT - 2 ,WIDTH - 2 };
 	int WallColor = GetColor(0,255,0);
 	int LoadColor = GetColor(0, 0, 255);
+
 	int StartColor = GetColor(0, 255, 255);
+	int GoalColor = GetColor(255, 0, 0);
+	
 	for (int y = 0; y < HEIGHT; y++)
 	{
 		for (int x = 0; x < WIDTH; x++)
 		{
 			int x1 = x * DrawSize;
 			int y1 = y * DrawSize;
-			int x2 = x1 * DrawSize;
-			int y2 = y1 * DrawSize;
+			int x2 = x1 + DrawSize;
+			int y2 = y1 + DrawSize;
 
 
 			if (Maze[y][x] == Wall)
 			{
 				DrawBox(x1, y1, x2,y2, WallColor,TRUE);
 			}
-			else if(Maze[y][x] == Load)
+			else 
 			{
 				DrawBox(x1, y1,x2,y2 , LoadColor, TRUE);
 			}
@@ -65,27 +73,22 @@ void maze::Draw()
 			{
 				DrawBox(x1,y1,x2,y2,StartColor, TRUE);
 			}
+			if (x == goal.x && y == goal.y)
+			{
+				DrawBox(x1, y1, x2, y2, GoalColor, TRUE);
+			}
 		}
 	}
 }
 
 void maze::CreateMaze()
 {
-	for (int y = 2; y < HEIGHT - 2; y += 2)
+	maze::Initialize();
+	
+	for (int y = 2; y < HEIGHT - 1; y += 2)
 	{
-		for (int x = 2; x < WIDTH - 2; x += 2)
+		for (int x = 2; x < WIDTH - 1; x += 2)
 		{
-			Maze[y][x] = Wall;
-		}
-    }
-
-	for (int y = 2; y < HEIGHT - 2; y += 2)
-	{
-		for (int x = 2; x < WIDTH - 2; x += 2)
-		{
-			//“|‚·•ûŒü
-			
-
 			while (true)
 			{
 				int direction;

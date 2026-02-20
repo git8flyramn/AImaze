@@ -14,22 +14,21 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	}
 	SetBackgroundColor(0, 0, 0);
 	SetDrawScreen(DX_SCREEN_BACK);
-	maze* Maze = new maze(43,43);
+	srand((unsigned int)time(NULL));
+	maze* Maze = new maze(41,41);
 	
 	
 	//迷路生成
-	
-	Maze->Initialize();
-	while (1)                    
+	Maze->CreateMaze();
+	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
-		ClearDrawScreen();
 		//迷路描画
-	
-		Maze->CreateMaze();
+		ClearDrawScreen();
 		Maze->Draw();
 		ScreenFlip();
 		WaitTimer(16);
 	}
+	delete Maze;
 	DxLib_End();           // ＤＸライブラリ使用の終了処理
 	return 0;                // ソフトの終了
 }
