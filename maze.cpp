@@ -7,9 +7,9 @@ maze::maze(int w, int h)
     DrawSize = 12;
 	Wall = 1;
     Load = 0;
-	WIDTH = w;
-	HEIGHT = h;
-	Maze.assign(HEIGHT, std::vector<int>(WIDTH, HEIGHT));
+	WIDTH = (w % 2 == 0) ? w + 1 : w;
+	HEIGHT = (h % 2 == 0) ? h + 1 : h;
+	Maze.assign(HEIGHT, std::vector<int>(WIDTH, Load));
 	
 }
 
@@ -19,14 +19,18 @@ maze::~maze()
 
 void maze::Initialize()
 {
-	for (int y = 0; y < WIDTH; ++y)
+	for (int y = 0; y < HEIGHT; ++y)
 	{
-		for (int x = 0; x < HEIGHT; ++x)
+		for (int x = 0; x < WIDTH; ++x)
 		{
-			Maze[y][x] = Load;
+			
 			if (y == 0 || y == HEIGHT - 1 || x == 0 || x == WIDTH - 1)
 			{
 				Maze[y][x] = Wall;
+			}
+			else
+			{
+				Maze[y][x] = Load;
 			}
 		}
 	}
@@ -34,28 +38,27 @@ void maze::Initialize()
 
 void maze::Draw()
 {
-	Start start;
+	Start start = {1,5};
 	int WallColor = GetColor(0,255,0);
 	int LoadColor = GetColor(0, 0, 255);
 	int StartColor = GetColor(0, 255, 255);
-	int GoalColor = GetColor(255, 0, 0);
-	for (int y = 0; y < WIDTH; y++)
+	for (int y = 0; y < HEIGHT; y++)
 	{
-		for (int x = 0; x < HEIGHT; x++)
+		for (int x = 0; x < WIDTH; x++)
 		{
 			int x1 = x * DrawSize;
 			int y1 = y * DrawSize;
-			int x2 = (x + 1) * DrawSize;
-			int y2 = (y + 1) * DrawSize;
+			int x2 = x1 * DrawSize;
+			int y2 = y1 * DrawSize;
 
 
 			if (Maze[y][x] == Wall)
 			{
-				DrawBox(x1 * DrawSize, y1 * DrawSize, DrawSize + (x2 + 2), DrawSize + (y2 + 2), WallColor,TRUE);
+				DrawBox(x1, y1, x2,y2, WallColor,TRUE);
 			}
 			else if(Maze[y][x] == Load)
 			{
-				DrawBox(x1 * DrawSize, y1 * DrawSize, DrawSize + (x2 + 2), DrawSize + (y2 + 2), LoadColor, TRUE);
+				DrawBox(x1, y1,x2,y2 , LoadColor, TRUE);
 			}
 
 			if (x == start.x && y == start.y)
@@ -68,22 +71,22 @@ void maze::Draw()
 
 void maze::CreateMaze()
 {
-	for (int y = 2; y < HEIGHT - 1; y += 2)
+	for (int y = 2; y < HEIGHT - 2; y += 2)
 	{
-		for (int x = 2; x < WIDTH - 1; x += 2)
+		for (int x = 2; x < WIDTH - 2; x += 2)
 		{
 			Maze[y][x] = Wall;
 		}
     }
 
-	for (int y = 2; y < HEIGHT - 1; y += 2)
+	for (int y = 2; y < HEIGHT - 2; y += 2)
 	{
-		for (int x = 2; x < WIDTH - 1; x += 2)
+		for (int x = 2; x < WIDTH - 2; x += 2)
 		{
 			//“|‚·•ûŒü
-			bool down = true;
+			
 
-			while (down)
+			while (true)
 			{
 				int direction;
 				if (y == 2)
@@ -94,7 +97,38 @@ void maze::CreateMaze()
 				{
 					direction = rand() % 3 + 1;
 				}
-				int nextX = x, nextY = y;
+				
+				int targetX = x;
+				int targetY = y;
+				switch (direction)
+				{
+				case 0: 
+					targetY--; 
+					break;
+				case 1:
+					targetX++;
+					break;
+				case 2:
+					targetY++;
+					break;
+				case 3:
+					targetX--;
+					break;
+
+				}
+				
+				if (Maze[targetY][targetX] == Load)
+				{
+					Maze[targetY][targetX] = Wall;
+					break;
+				}
+			}
+		}
+	}
+}
+
+/*
+int nextX = x, nextY = y;
 				if (direction == 0)
 				{
 					nextY--;
@@ -111,13 +145,4 @@ void maze::CreateMaze()
 				{
 					nextX--;
 				}
-				if (Maze[nextY][nextX] == Load)
-				{
-					Maze[y][x] = Wall;
-					Maze[nextY][nextX] = Wall;
-					down = false;
-				}
-			}
-		}
-	}
-}
+*/
