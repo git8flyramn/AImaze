@@ -5,8 +5,8 @@
 // ƒvƒƒOƒ‰ƒ€‚Í WinMain ‚©‚çŽn‚Ü‚è‚Ü‚·
 int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	SetWindowText("–À˜H");
-	SetGraphMode(600, 480, 32);
+	SetMainWindowText("–À˜H");
+	SetGraphMode(600, 600, 32);
 	ChangeWindowMode(TRUE);
 	if (DxLib_Init() == -1)
 	{
@@ -17,14 +17,16 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	srand((unsigned int)time(NULL));
 	maze* Maze = new maze(41,41);
 	
-	
+	//ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0
 	//–À˜H¶¬
+	Maze->Initialize();
 	Maze->CreateMaze();
-	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
+	ClearDrawScreen();
+	Maze->Draw();
+	while (1)
 	{
 		//–À˜H•`‰æ
-		ClearDrawScreen();
-		Maze->Draw();
+		
 		ScreenFlip();
 		WaitTimer(16);
 	}

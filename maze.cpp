@@ -45,7 +45,7 @@ void maze::Draw()
 	Start start = {1,5};
 	Goal goal = { HEIGHT - 2 ,WIDTH - 2 };
 	int WallColor = GetColor(0,255,0);
-	int LoadColor = GetColor(0, 0, 255);
+	int LoadColor = GetColor(255, 255, 255);
 
 	int StartColor = GetColor(0, 255, 255);
 	int GoalColor = GetColor(255, 0, 0);
@@ -64,7 +64,7 @@ void maze::Draw()
 			{
 				DrawBox(x1, y1, x2,y2, WallColor,TRUE);
 			}
-			else 
+			else if(Maze[y][x] == Load)
 			{
 				DrawBox(x1, y1,x2,y2 , LoadColor, TRUE);
 			}
@@ -83,52 +83,40 @@ void maze::Draw()
 
 void maze::CreateMaze()
 {
-	maze::Initialize();
 	
-	for (int y = 2; y < HEIGHT - 1; y += 2)
-	{
-		for (int x = 2; x < WIDTH - 1; x += 2)
-		{
-			while (true)
+	Initialize(); for (int y = 2; y < HEIGHT - 1; y += 2) {
+		for (int x = 2; x < WIDTH - 1; x += 2) {
+			int direction;
+			if (y == 2)
 			{
-				int direction;
-				if (y == 2)
-				{
-					direction = rand() % 4;
-				}
-				else
-				{
-					direction = rand() % 3 + 1;
-				}
-				
-				int targetX = x;
-				int targetY = y;
-				switch (direction)
-				{
-				case 0: 
-					targetY--; 
-					break;
-				case 1:
-					targetX++;
-					break;
-				case 2:
-					targetY++;
-					break;
-				case 3:
-					targetX--;
-					break;
-
-				}
-				
-				if (Maze[targetY][targetX] == Load)
-				{
-					Maze[targetY][targetX] = Wall;
-					break;
-				}
+				direction = rand() % 4;
 			}
+			else
+			{
+				direction = rand() % 3 + 1;
+			}
+
+			int targetX = x;
+			int targetY = y;
+			switch (direction)
+			{
+			case 0: targetY--;
+				break;
+			case 1: targetX++;
+				break;
+			case 2: targetY++;
+				break;
+			case 3:
+				targetX--;
+				break;
+			} // •Ç‚ð‰ó‚·iLoad ‚É‚·‚éj
+			Maze[targetY][targetX] = Wall;
 		}
 	}
 }
+
+
+/*
 
 /*
 int nextX = x, nextY = y;
@@ -148,4 +136,4 @@ int nextX = x, nextY = y;
 				{
 					nextX--;
 				}
-*/
+				*/
