@@ -33,6 +33,7 @@ private:
 	int DrawSize;
 	int Wall;
     int Load;
+	int ActiveDfs;
 	bool dfsSearch = false;
 	
 };

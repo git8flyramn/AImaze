@@ -2,12 +2,14 @@
 #include "stdlib.h"
 #include <ctime>
 #include <vector>
+#include<stack>
 maze::maze(int w, int h)
 {
 	DrawSize = 12;
 	Wall = 1;
 	Load = 0;
 	Path = 2;
+	ActiveDfs = 3;
 	WIDTH = (w % 2 == 0) ? w + 1 : w;
 	HEIGHT = (h % 2 == 0) ? h + 1 : h;
 	Maze.assign(HEIGHT, std::vector<int>(WIDTH, Load));
@@ -43,11 +45,13 @@ void maze::Initialize()
 
 void maze::Draw()
 {
-	Start start = {2,2};
-	Goal goal = { HEIGHT - 3 ,WIDTH - 3 };
+	Start start = {1,1};
+	Goal goal = { HEIGHT - 2 ,WIDTH - 2 };
 	int WallColor = GetColor(0,255,0);
-	int LoadColor = GetColor(255, 255, 255);
-	int PathColor = GetColor(255, 200, 0);
+    int LoadColor = GetColor(255, 255, 255);
+	
+	int PathColor = GetColor(0, 0, 0);
+	
 	int StartColor = GetColor(0, 255, 255);
 	int GoalColor = GetColor(255, 0, 0);
 	
@@ -130,8 +134,8 @@ bool maze::DFS(int y, int x, int goalX, int goalY, std::vector<std::vector<int>>
 	//Visited[y][x] = 1;
 	Visited[y][x] = Wall;
 
-	const int dx[4] = {  0, 0 -1,-1};
-	const int dy[4] = { -1,-1, 0, 0};
+	const int dx[4] = {1,-1, 0,  0};
+	const int dy[4] = {0, 0, 1, -1};
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -142,7 +146,6 @@ bool maze::DFS(int y, int x, int goalX, int goalY, std::vector<std::vector<int>>
 		{
 			if (DFS(ny, nx, goalX, goalY,visited))
 			{
-				Draw();
 				Maze[ny][nx] = Path;
 				return true;
 			}
@@ -155,19 +158,81 @@ bool maze::DFS(int y, int x, int goalX, int goalY, std::vector<std::vector<int>>
 
 void maze::StartDFS()
 {
+	/*std::vector<std::vector<int>> visited(HEIGHT, std::vector<int>(WIDTH, 0));
 	int startX = 2;
 	int startY = 2;
 	int gx = WIDTH - 3;
 	int gy = HEIGHT - 3;
-	std::vector<std::vector<int>> visited(HEIGHT, std::vector<int>(WIDTH, 0));
-	DFS(startX, startY, gx, gy, visited);
+	Maze[startY][startX] = Path;*/
+	AnimationDFS();
+	
 
     
 }
 
 void maze::AnimationDFS()
 {
+	std::vector<std::vector<int>> visited(HEIGHT, std::vector<int>(WIDTH, 0));
+	int startX = 2;
+	int startY = 2;
+	int gx = WIDTH - 3;
+	int gy = HEIGHT - 3;
+
+	struct Node
+	{
+		int x,y;
+	};
+	std::stack<Node> st;
+	st.push({ startX,startY });
+	visited[startX][startY] = Wall;
+
+	const int dx[4] = { 1,-1, 0,  0 };
+	const int dy[4] = { 0, 0, 1, -1 };
+	while (!st.empty())
+	{
+		Node cur = st.top();
+
+		if (cur.x = gx & cur.y == gy)
+		{
+			break;
+		}
+
+		bool moved = false;
+
+		for (int i = 0; i < 4; i++)
+		{
+			int nx = cur.x + dx[i];
+			int ny = cur.y + dy[i];
+			if (nx <= 0 || nx >= WIDTH - 1 || ny <= 0 || nx >= HEIGHT - 1)
+			{
+				continue;
+			}
+
+			if (Maze[ny][nx] == Load && !visited[ny][nx])
+			{
+				visited[ny][nx] = Wall;
+				st.push({ startX,startY });
+
+				Maze[ny][nx] = ActiveDfs;
+				Draw();
+				ScreenFlip();
+				WaitTimer(10);
+				moved = true;
+				break;
+			}
+		}
+
+		if (!moved)
+		{
+			st.pop();
+		}
+		while (!st.empty())
+		{
+			Node cur = st.top();
+			st.pop();
+			Maze[cur.y][cur.x] = Path;
+		}
+	}
+
+
 }
-
-
-
