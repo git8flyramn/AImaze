@@ -2,6 +2,7 @@
 #include "stdlib.h"
 #include <ctime>
 #include "maze.h"
+#include "DepthSearch.h"
 // ƒvƒƒOƒ‰ƒ€‚Í WinMain ‚©‚çŽn‚Ü‚è‚Ü‚·
 int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -23,6 +24,7 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	Maze->CreateMaze();
 	ClearDrawScreen();
 	Maze->Draw();
+	Maze->StartDFS();
 	while (1)
 	{
 		//–À˜H•`‰æ

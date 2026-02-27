@@ -4,14 +4,15 @@
 #include <vector>
 maze::maze(int w, int h)
 {
-    DrawSize = 12;
+	DrawSize = 12;
 	Wall = 1;
-    Load = 0;
+	Load = 0;
+	Path = 2;
 	WIDTH = (w % 2 == 0) ? w + 1 : w;
 	HEIGHT = (h % 2 == 0) ? h + 1 : h;
 	Maze.assign(HEIGHT, std::vector<int>(WIDTH, Load));
-	
 }
+
 
 maze::~maze()
 {
@@ -42,11 +43,11 @@ void maze::Initialize()
 
 void maze::Draw()
 {
-	Start start = {1,5};
-	Goal goal = { HEIGHT - 2 ,WIDTH - 2 };
+	Start start = {2,2};
+	Goal goal = { HEIGHT - 3 ,WIDTH - 3 };
 	int WallColor = GetColor(0,255,0);
 	int LoadColor = GetColor(255, 255, 255);
-
+	int PathColor = GetColor(255, 200, 0);
 	int StartColor = GetColor(0, 255, 255);
 	int GoalColor = GetColor(255, 0, 0);
 	
@@ -77,6 +78,10 @@ void maze::Draw()
 			{
 				DrawBox(x1, y1, x2, y2, GoalColor, TRUE);
 			}
+			if (Maze[y][x] == Path)
+			{
+				DrawBox(x1, y1, x2, y2, PathColor, TRUE);
+			}
 		}
 	}
 }
@@ -84,7 +89,8 @@ void maze::Draw()
 void maze::CreateMaze()
 {
 	
-	Initialize(); for (int y = 2; y < HEIGHT - 1; y += 2) {
+	Initialize(); 
+	for (int y = 2; y < HEIGHT - 1; y += 2) {
 		for (int x = 2; x < WIDTH - 1; x += 2) {
 			int direction;
 			if (y == 2)
@@ -115,25 +121,49 @@ void maze::CreateMaze()
 	}
 }
 
+bool maze::DFS(int y, int x, int goalX, int goalY, std::vector<std::vector<int>>& visited)
+{
+	if (y == goalY && x == goalX)
+	{
+		return true;
+	}
+	//Visited[y][x] = 1;
+	Visited[y][x] = Wall;
 
-/*
+	const int dx[4] = {  0, 0 -1,-1};
+	const int dy[4] = { -1,-1, 0, 0};
 
-/*
-int nextX = x, nextY = y;
-				if (direction == 0)
-				{
-					nextY--;
-				}
-				else if (direction == 1)
-				{
-					nextX++;
-				}
-				else if (direction == 2)
-				{
-					nextY++;
-				}
-				else if (direction == 3)
-				{
-					nextX--;
-				}
-				*/
+	for (int i = 0; i < 4; i++)
+	{
+		int ny = y + dy[i];
+		int nx = x + dx[i];
+
+		if (Maze[ny][nx] == Load && !Visited[ny][nx])
+		{
+			if (DFS(ny, nx, goalX, goalY,visited))
+			{
+				Draw();
+				Maze[ny][nx] = Path;
+				return true;
+			}
+	   }
+		
+	}
+	return false;
+
+}
+
+void maze::StartDFS()
+{
+	int startX = 2;
+	int startY = 2;
+	int gx = WIDTH - 3;
+	int gy = HEIGHT - 3;
+	std::vector<std::vector<int>> visited(HEIGHT, std::vector<int>(WIDTH, 0));
+	DFS(startX, startY, gx, gy, visited);
+
+    
+}
+
+
+
