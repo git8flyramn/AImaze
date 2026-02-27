@@ -23,7 +23,7 @@ public:
 	void CreateMaze();
 	bool DFS(int y, int x, int goalX, int goalY, std::vector<std::vector<int>>& visited);
 	void StartDFS();
-	
+	void AnimationDFS();
 private:
 	int WIDTH;
     int HEIGHT;

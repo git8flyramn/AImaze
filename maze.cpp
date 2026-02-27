@@ -165,5 +165,9 @@ void maze::StartDFS()
     
 }
 
+void maze::AnimationDFS()
+{
+}
+
 
 
