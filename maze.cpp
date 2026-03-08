@@ -9,10 +9,11 @@ maze::maze(int w, int h)
 	Wall = 1;
 	Load = 0;
 	Path = 2;
-	ActiveDfs = 3;
+	ActiveDfs = 2;
 	WIDTH = (w % 2 == 0) ? w + 1 : w;
 	HEIGHT = (h % 2 == 0) ? h + 1 : h;
 	Maze.assign(HEIGHT, std::vector<int>(WIDTH, Load));
+	
 }
 
 
@@ -45,8 +46,8 @@ void maze::Initialize()
 
 void maze::Draw()
 {
-	Start start = {1,1};
-	Goal goal = { HEIGHT - 2 ,WIDTH - 2 };
+	Start start = { 2,2 };
+	Goal goal = { HEIGHT - 3 ,WIDTH - 3 };
 	int WallColor = GetColor(0,255,0);
     int LoadColor = GetColor(255, 255, 255);
 	
@@ -158,13 +159,17 @@ bool maze::DFS(int y, int x, int goalX, int goalY, std::vector<std::vector<int>>
 
 void maze::StartDFS()
 {
-	/*std::vector<std::vector<int>> visited(HEIGHT, std::vector<int>(WIDTH, 0));
-	int startX = 2;
-	int startY = 2;
-	int gx = WIDTH - 3;
-	int gy = HEIGHT - 3;
-	Maze[startY][startX] = Path;*/
-	AnimationDFS();
+	visited.assign(HEIGHT, std::vector<int>(WIDTH, 0));
+	gx = WIDTH - 3;
+	gy = HEIGHT - 3;
+
+	while (!st.empty())
+	{
+		st.pop();
+	}
+	st.push({2,2});
+	visited[2][2] = 1;
+	dfsSearch = true;
 	
 
     
@@ -172,7 +177,7 @@ void maze::StartDFS()
 
 void maze::AnimationDFS()
 {
-	std::vector<std::vector<int>> visited(HEIGHT, std::vector<int>(WIDTH, 0));
+	/*std::vector<std::vector<int>> visited(HEIGHT, std::vector<int>(WIDTH, 0));
 	int startX = 2;
 	int startY = 2;
 	int gx = WIDTH - 3;
@@ -232,7 +237,48 @@ void maze::AnimationDFS()
 			st.pop();
 			Maze[cur.y][cur.x] = Path;
 		}
+	}*/
+
+
+}
+
+void maze::UpdateDFS()
+{
+	if (!dfsSearch || st.empty())
+	{
+		return;
 	}
 
+	Node currnt = st.top();
+	if (currnt.x == gx && currnt.y == gy)
+	{
+		dfsSearch = false;
+		return;
+	}
 
+	const int dx[4] = { 1,-1,0,0 };
+	const int dy[4] = { 0,0,1,-1 };
+
+	bool moved = false;
+
+	for (int i = 0; i < 4; i++)
+	{
+		int nx = currnt.x + dx[i];
+		int ny = currnt.y + dy[i];
+
+		if (Maze[ny][nx] == Load && !visited[ny][nx])
+		{
+			visited[ny][nx] = 1;
+			st.push({ny, nx});
+			Maze[ny][nx] = ActiveDfs;
+			moved = true;
+			break;
+		}
+	}
+
+	if (!moved)
+	{
+		st.pop();
+		Maze[currnt.x][currnt.y] = Path;
+	}
 }

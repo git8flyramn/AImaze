@@ -21,15 +21,15 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	//ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0
 	//–À˜H¶¬
 	ClearDrawScreen();
-	Maze->Initialize();
 	Maze->CreateMaze();
 	Maze->StartDFS();
-	Maze->Draw();
 	
 	while (1)
 	{
 		//–À˜H•`‰æ
 		
+		Maze->UpdateDFS();
+		Maze->Draw();
 		ScreenFlip();
 		WaitTimer(16);
 	}
