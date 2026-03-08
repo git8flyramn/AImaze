@@ -2,7 +2,6 @@
 #include "stdlib.h"
 #include <ctime>
 #include "maze.h"
-#include "DepthSearch.h"
 // ƒvƒƒOƒ‰ƒ€‚Í WinMain ‚©‚çn‚Ü‚è‚Ü‚·
 int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {

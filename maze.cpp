@@ -3,6 +3,8 @@
 #include <ctime>
 #include <vector>
 #include<stack>
+
+
 maze::maze(int w, int h)
 {
 	DrawSize = 12;
@@ -14,9 +16,8 @@ maze::maze(int w, int h)
 	HEIGHT = (h % 2 == 0) ? h + 1 : h;
 	Maze.assign(HEIGHT, std::vector<int>(WIDTH, Load));
 	
+	
 }
-
-
 maze::~maze()
 {
 }
@@ -46,6 +47,7 @@ void maze::Initialize()
 
 void maze::Draw()
 {
+
 	Start start = { 2,2 };
 	Goal goal = { HEIGHT - 3 ,WIDTH - 3 };
 	int WallColor = GetColor(0,255,0);
@@ -54,7 +56,7 @@ void maze::Draw()
 	int PathColor = GetColor(0, 0, 0);
 	
 	int StartColor = GetColor(0, 255, 255);
-	int GoalColor = GetColor(255, 0, 0);
+	int GoalColor = GetColor(0, 0, 0);
 	
 	for (int y = 0; y < HEIGHT; y++)
 	{
@@ -75,7 +77,7 @@ void maze::Draw()
 				DrawBox(x1, y1,x2,y2 , LoadColor, TRUE);
 			}
 
-			if (x == start.x && y == start.y)
+			if (x == start.x&& y == start.y)
 			{
 				DrawBox(x1,y1,x2,y2,StartColor, TRUE);
 			}
@@ -126,42 +128,12 @@ void maze::CreateMaze()
 	}
 }
 
-bool maze::DFS(int y, int x, int goalX, int goalY, std::vector<std::vector<int>>& visited)
-{
-	if (y == goalY && x == goalX)
-	{
-		return true;
-	}
-	//Visited[y][x] = 1;
-	Visited[y][x] = Wall;
-
-	const int dx[4] = {1,-1, 0,  0};
-	const int dy[4] = {0, 0, 1, -1};
-
-	for (int i = 0; i < 4; i++)
-	{
-		int ny = y + dy[i];
-		int nx = x + dx[i];
-
-		if (Maze[ny][nx] == Load && !Visited[ny][nx])
-		{
-			if (DFS(ny, nx, goalX, goalY,visited))
-			{
-				Maze[ny][nx] = Path;
-				return true;
-			}
-	   }
-		
-	}
-	return false;
-
-}
-
 void maze::StartDFS()
 {
 	visited.assign(HEIGHT, std::vector<int>(WIDTH, 0));
-	gx = WIDTH - 3;
-	gy = HEIGHT - 3;
+	
+	goalx = WIDTH - 3;
+	goaly = HEIGHT - 3;
 
 	while (!st.empty())
 	{
@@ -238,19 +210,18 @@ void maze::AnimationDFS()
 			Maze[cur.y][cur.x] = Path;
 		}
 	}*/
-
-
 }
 
 void maze::UpdateDFS()
 {
+	
 	if (!dfsSearch || st.empty())
 	{
 		return;
 	}
 
 	Node currnt = st.top();
-	if (currnt.x == gx && currnt.y == gy)
+	if (currnt.x == goalx && currnt.y == goaly)
 	{
 		dfsSearch = false;
 		return;
