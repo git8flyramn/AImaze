@@ -17,6 +17,10 @@ struct Start
 struct Node
 {
 	int x, y;
+	int cost;
+	bool operator>(const Node& other) const {
+		return cost > other.cost;
+	}
 };
 class maze
 {
@@ -29,6 +33,10 @@ public:
 	void StartDFS();//DFSの開始
 	void AnimationDFS();//経路探索のアニメーション
 	void UpdateDFS();//アニメーションの更新
+	void StartDijkstra(Start start);
+	void AnimationDijkstra(const std::vector<std::pair<int, int>>& path);
+	void UpdateDijkstra();
+	std::vector<POINT> buildPath(Start start, Goal goal);
 private:
 	int WIDTH;
     int HEIGHT;
