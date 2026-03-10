@@ -23,7 +23,7 @@ maze::~maze()
 
 void maze::Initialize()
 {
-	
+
 	for (int y = 0; y < HEIGHT; y++)
 	{
 		for (int x = 0; x < WIDTH; x++)
@@ -53,10 +53,10 @@ void maze::Draw()
     int LoadColor = GetColor(255, 255, 255);
 	
 	int PathColor = GetColor(0, 0, 0);
-	
+
 	int StartColor = GetColor(0, 255, 255);
 	int GoalColor = GetColor(255, 0, 0);
-	
+
 	for (int y = 0; y < HEIGHT; y++)
 	{
 		for (int x = 0; x < WIDTH; x++)
@@ -69,16 +69,16 @@ void maze::Draw()
 
 			if (Maze[y][x] == Wall)
 			{
-				DrawBox(x1, y1, x2,y2, WallColor,TRUE);
+				DrawBox(x1, y1, x2, y2, WallColor, TRUE);
 			}
-			else if(Maze[y][x] == Load)
+			else if (Maze[y][x] == Load)
 			{
-				DrawBox(x1, y1,x2,y2 , LoadColor, TRUE);
+				DrawBox(x1, y1, x2, y2, LoadColor, TRUE);
 			}
 
 			if (x == start.x&& y == start.y)
 			{
-				DrawBox(x1,y1,x2,y2,StartColor, TRUE);
+				DrawBox(x1, y1, x2, y2, StartColor, TRUE);
 			}
 			if (x == goal.x && y == goal.y)
 			{
@@ -94,8 +94,7 @@ void maze::Draw()
 
 void maze::CreateMaze()
 {
-	
-	Initialize(); 
+
 	for (int y = 2; y < HEIGHT - 1; y += 2) {
 		for (int x = 2; x < WIDTH - 1; x += 2) {
 			int direction;
@@ -130,7 +129,7 @@ void maze::CreateMaze()
 void maze::StartDFS()
 {
 	visited.assign(HEIGHT, std::vector<int>(WIDTH, 0));
-	
+
 	goalx = WIDTH - 3;
 	goaly = HEIGHT - 3;
 
@@ -138,12 +137,12 @@ void maze::StartDFS()
 	{
 		st.pop();
 	}
-	st.push({2,2});
+	st.push({ 2,2 });
 	visited[2][2] = 1;
 	dfsSearch = true;
-	
 
-    
+
+
 }
 
 void maze::AnimationDFS()
@@ -213,7 +212,7 @@ void maze::AnimationDFS()
 
 void maze::UpdateDFS()
 {
-	
+
 	if (!dfsSearch || st.empty())
 	{
 		return;
@@ -303,22 +302,22 @@ void maze::StartDijkstra(Start start, Goal goal)
 
 }
 
-void maze::AnimationDijkstra(const std::vector<std::pair<int,int>>& path)
+void maze::AnimationDijkstra(const std::vector<std::pair<int, int>>& path)
 {
 	   for (auto& p : path) {
         Maze[p.first][p.second] = Path; // çïÇ≈ï`Ç©ÇÍÇÈ
 		Draw();
-        ScreenFlip();
-        WaitTimer(30);
-       }
+		ScreenFlip();
+		WaitTimer(30);
+	}
 }
-	
+
 
 
 void maze::UpdateDijkstra()
 {
-	
-	
+
+
 
 }
 

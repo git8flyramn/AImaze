@@ -26,7 +26,7 @@ struct Node
 class maze
 {
 public:
-	maze(int w,int h);
+	maze(int w, int h);
 	~maze();
 	void Initialize();
 	void Draw();
@@ -40,7 +40,7 @@ public:
 	std::vector<std::pair<int, int>> buildPath(int sx, int sy, int gx, int gy);
 private:
 	int WIDTH;
-    int HEIGHT;
+	int HEIGHT;
 	int Path;
 	std::stack<Node> st;
 	std::vector<std::vector<int>> Maze;
@@ -48,10 +48,10 @@ private:
 	std::vector<std::vector<std::pair<int, int>>> prevPos;
 	int DrawSize;
 	int Wall;
-    int Load;
+	int Load;
 	int goalx;
 	int goaly;
 	int ActiveDfs;
 	bool dfsSearch = false;
-	
+
 };
