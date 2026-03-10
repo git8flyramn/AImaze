@@ -30,6 +30,7 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	{
 		//–À˜H•`‰æ
 		
+		Maze->UpdateDFS();
 		ScreenFlip();
 		WaitTimer(16);
 	}
