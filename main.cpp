@@ -2,7 +2,8 @@
 #include "stdlib.h"
 #include <ctime>
 #include "maze.h"
-#include "DepthSearch.h"
+#include<iostream>
+#include <vector>
 // ƒvƒƒOƒ‰ƒ€‚Í WinMain ‚©‚çŽn‚Ü‚è‚Ü‚·
 int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -17,15 +18,16 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	SetDrawScreen(DX_SCREEN_BACK);
 	srand((unsigned int)time(NULL));
 	maze* Maze = new maze(41,41);
-	
+	Start start = { 2,2 };
+	Goal goal = { 41 - 3,41 - 3 };
 	//ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0
 	//–À˜H¶¬
 	ClearDrawScreen();
-	Maze->Initialize();
 	Maze->CreateMaze();
-	Maze->StartDFS();
-	Maze->Draw();
-	
+	//Maze->StartDFS();
+	Maze->StartDijkstra(start);
+	std::vector<std::pair<int, int>> path;
+	path = Maze->buildPath(start, goal);
 	while (1)
 	{
 		//–À˜H•`‰æ

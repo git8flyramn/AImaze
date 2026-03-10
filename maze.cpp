@@ -76,7 +76,7 @@ void maze::Draw()
 				DrawBox(x1, y1, x2, y2, LoadColor, TRUE);
 			}
 
-			if (x == start.x && y == start.y)
+			if (x == start.x&& y == start.y)
 			{
 				DrawBox(x1, y1, x2, y2, StartColor, TRUE);
 			}
