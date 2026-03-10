@@ -17,29 +17,29 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	SetBackgroundColor(0, 0, 0);
 	SetDrawScreen(DX_SCREEN_BACK);
 	srand((unsigned int)time(NULL));
-	maze* Maze = new maze(41,41);
+	maze* MAZE = new maze(41,41);
 	Start start = { 2,2 };
-	Goal goal = { 41 - 3,41 - 3 };
+	Goal goal = { 39,39};
 	//ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0
 	//迷路生成
 	ClearDrawScreen();
-	Maze->CreateMaze();
+	MAZE->CreateMaze();
+	MAZE->Draw();
 	//Maze->StartDFS();
-	Maze->StartDijkstra(start);
-	std::vector<std::pair<int, int>> path;
-	path = Maze->buildPath(start, goal);
+	MAZE->StartDijkstra(start, goal);
 	while (1)
 	{
 		//迷路描画
 		
 		//Maze->UpdateDFS();
 		
-		Maze->Draw();
+	
+		
 	
 		ScreenFlip();
 		WaitTimer(16);
 	}
-	delete Maze;
+	delete MAZE;
 	DxLib_End();           // ＤＸライブラリ使用の終了処理
 	return 0;                // ソフトの終了
 }

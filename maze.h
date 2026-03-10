@@ -2,7 +2,7 @@
 #include "DxLib.h"
 #include <vector>
 #include<stack>
-
+#include <iostream>
 struct Goal
 {
 	int x;
@@ -18,10 +18,11 @@ struct Node
 {
 	int x, y;
 	int cost;
-	bool operator>(const Node& other) const {
-		return cost > other.cost;
+	bool operator<(const Node& other) const {
+		return cost > other.cost;  
 	}
 };
+
 class maze
 {
 public:
@@ -33,10 +34,10 @@ public:
 	void StartDFS();//DFSの開始
 	void AnimationDFS();//経路探索のアニメーション
 	void UpdateDFS();//アニメーションの更新
-	void StartDijkstra(Start start);
+	void StartDijkstra(Start start, Goal goal);
 	void AnimationDijkstra(const std::vector<std::pair<int, int>>& path);
 	void UpdateDijkstra();
-	std::vector<POINT> buildPath(Start start, Goal goal);
+	std::vector<std::pair<int, int>> buildPath(int sx, int sy, int gx, int gy);
 private:
 	int WIDTH;
     int HEIGHT;
@@ -44,6 +45,7 @@ private:
 	std::stack<Node> st;
 	std::vector<std::vector<int>> Maze;
 	std::vector<std::vector<int>>visited;
+	std::vector<std::vector<std::pair<int, int>>> prevPos;
 	int DrawSize;
 	int Wall;
     int Load;
