@@ -23,6 +23,7 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	//ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0
 	//–À˜H¶¬
 	ClearDrawScreen();
+	MAZE->Initialize();
 	MAZE->CreateMaze();
 	//MAZE->Draw();
 	//Maze->StartDFS();
