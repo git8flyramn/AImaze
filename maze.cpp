@@ -4,6 +4,7 @@
 #include<stack>
 #include <limits>
 #include<queue>
+#include <utility>
 maze::maze(int w, int h)
 {
 	DrawSize = 12;
@@ -48,9 +49,9 @@ void maze::Draw()
 
 	Start start = { 2,2 };
 	Goal goal = { HEIGHT - 2 ,WIDTH - 2 };
-	int WallColor = GetColor(0, 255, 0);
-	int LoadColor = GetColor(255, 255, 255);
-
+	int WallColor = GetColor(0,255,0);
+    int LoadColor = GetColor(255, 255, 255);
+	
 	int PathColor = GetColor(0, 0, 0);
 
 	int StartColor = GetColor(0, 255, 255);
@@ -333,3 +334,4 @@ std::vector<std::pair<int, int>> maze::buildPath(int sx, int sy, int gx, int gy)
 	std::reverse(path.begin(), path.end());
 	return path;
 }
+
