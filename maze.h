@@ -37,8 +37,7 @@ public:
 	void Draw();
 	void CreateMaze();
 	void StartDFS();//DFSの開始
-	void AnimationDFS();//経路探索のアニメーション
-	void UpdateDFS();//アニメーションの更新
+	void UpdateDFS();//DFSアニメーションの更新
 	void StartDijkstra(Start start, Goal goal);
 	void AnimationDijkstra(const std::vector<std::pair<int, int>>& path);
 	std::vector<std::pair<int, int>> buildPath(int sx, int sy, int gx, int gy);
