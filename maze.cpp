@@ -47,11 +47,11 @@ void maze::Initialize()
 void maze::Draw()
 {
 
-	Start start = { 2,2 };
+	Start start = { 1,2 };
 	Goal goal = { HEIGHT - 2 ,WIDTH - 2 };
-	int WallColor = GetColor(0,255,0);
-    int LoadColor = GetColor(255, 255, 255);
-	
+	int WallColor = GetColor(0, 255, 0);
+	int LoadColor = GetColor(255, 255, 255);
+
 	int PathColor = GetColor(0, 0, 0);
 
 	int StartColor = GetColor(0, 255, 255);
@@ -76,7 +76,7 @@ void maze::Draw()
 				DrawBox(x1, y1, x2, y2, LoadColor, TRUE);
 			}
 
-			if (x == start.x&& y == start.y)
+			if (x == start.x && y == start.y)
 			{
 				DrawBox(x1, y1, x2, y2, StartColor, TRUE);
 			}
@@ -225,8 +225,8 @@ void maze::UpdateDFS()
 		return;
 	}
 
-	const int dx[4] = { 1,-1,0,0 };
-	const int dy[4] = { 0,0,1,-1 };
+	const int dx[4] = { 2,-2,0, 0 };
+	const int dy[4] = { 0, 0,2,-2 };
 
 	bool moved = false;
 
@@ -255,17 +255,15 @@ void maze::UpdateDFS()
 void maze::StartDijkstra(Start start, Goal goal)
 {
 
-	const int INF = (std::numeric_limits<int>::max)();
+	const int INF = 1e9;
 
 	std::vector<std::vector<int>> dist(HEIGHT, std::vector<int>(WIDTH, INF));
-
-	std::priority_queue<Node, std::vector<Node>, std::greater<Node>> queue;
-
+	std::priority_queue<Node, std::vector<Node>, Compare> queue;
 	dist[start.y][start.x] = 0;
 	queue.push({ start.x, start.y, 0 });
 
-	int dy[4] = { -1, 1, 0, 0 };
-	int dx[4] = { 0, 0, -1, 1 };
+	int dy[4] = { -2, 2, 0, 0 };
+	int dx[4] = { 0, 0, -2, 2 };
 
 	while (!queue.empty())
 	{
@@ -290,22 +288,22 @@ void maze::StartDijkstra(Start start, Goal goal)
 			{
 				dist[ny][nx] = cost;
 
-				// Åö ÉNÉâÉXÉÅÉìÉo prevPos Ç…ãLò^
 				prevPos[ny][nx] = { y, x };
 
 				queue.push({ nx, ny, cost });
 			}
 		}
 	}
-		
+
 
 
 }
 
 void maze::AnimationDijkstra(const std::vector<std::pair<int, int>>& path)
 {
-	   for (auto& p : path) {
-        Maze[p.first][p.second] = Path; // çïÇ≈ï`Ç©ÇÍÇÈ
+	//ÉXÉ^Å[ÉgÇ©ÇÁÉSÅ[ÉãÇ‹Ç≈ÇÃç≈íZåoòH
+	for (auto& p : path) {
+		Maze[p.first][p.second] = Path; // çïÇ≈ï`Ç©ÇÍÇÈ
 		Draw();
 		ScreenFlip();
 		WaitTimer(30);
@@ -314,12 +312,7 @@ void maze::AnimationDijkstra(const std::vector<std::pair<int, int>>& path)
 
 
 
-void maze::UpdateDijkstra()
-{
 
-
-
-}
 
 std::vector<std::pair<int, int>> maze::buildPath(int sx, int sy, int gx, int gy)
 {
@@ -337,4 +330,3 @@ std::vector<std::pair<int, int>> maze::buildPath(int sx, int sy, int gx, int gy)
 	std::reverse(path.begin(), path.end());
 	return path;
 }
-

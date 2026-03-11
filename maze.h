@@ -18,8 +18,13 @@ struct Node
 {
 	int x, y;
 	int cost;
-	bool operator<(const Node& other) const {
-		return cost > other.cost;  
+	
+};
+
+struct Compare
+{
+	bool operator()(const Node& a, const Node& b) const {
+		return  a.cost > b.cost;
 	}
 };
 
