@@ -25,9 +25,8 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	ClearDrawScreen();
 	Maze->CreateMaze();
 	//Maze->StartDFS();
-	Maze->StartDijkstra(start);
+	Maze->StartDijkstra(start,goal);
 	std::vector<std::pair<int, int>> path;
-	path = Maze->buildPath(start, goal);
 	while (1)
 	{
 		//–À˜H•`‰æ

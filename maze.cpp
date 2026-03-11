@@ -1,6 +1,5 @@
 #include "maze.h"
 #include "stdlib.h"
-#include <ctime>
 #include <vector>
 #include<stack>
 #include <limits>
@@ -15,7 +14,7 @@ maze::maze(int w, int h)
 	WIDTH = (w % 2 == 0) ? w + 1 : w;
 	HEIGHT = (h % 2 == 0) ? h + 1 : h;
 	Maze.assign(HEIGHT, std::vector<int>(WIDTH, Load));
-
+	prevPos.assign(HEIGHT, std::vector<std::pair<int, int>>(WIDTH, { -1,-1 }));
 }
 maze::~maze()
 {
@@ -76,7 +75,7 @@ void maze::Draw()
 				DrawBox(x1, y1, x2, y2, LoadColor, TRUE);
 			}
 
-			if (x == start.x&& y == start.y)
+			if (x == start.x && y == start.y)
 			{
 				DrawBox(x1, y1, x2, y2, StartColor, TRUE);
 			}
@@ -252,66 +251,55 @@ void maze::UpdateDFS()
 	}
 }
 
-//void maze::StartDijkstra(Start start)
-//{
-//
-//	const int INF = 999;
-//	const int wid = 41;
-//	const int hei = 41;
-//	int maze[hei][wid];
-//	int cost[hei][wid];
-//	int dist[hei][wid];
-//	POINT prev[hei][wid];
-//	std::priority_queue<Node> queue;
-//	queue.push({ start.y,start.x });
-//	for (int y = 0; y < hei; y++)
-//	{
-//		for (int x = 0; x < wid; x++)
-//		{
-//			dist[y][x] = INF;
-//			prev[y][x] = { -1,-1 };
-//		}
-//	}
-//	dist[start.y][start.x] = 0;
-//
-//	int dx[4] = { 0,0,1,-1 };
-//	int dy[4] = { 1,-1,0,0 };
-//
-//	while (!queue.empty())
-//	{
-//		Node cur = queue.top(); queue.pop();
-//
-//		if (cur.cost > dist[cur.y][cur.x])
-//		{
-//			continue;
-//		}
-//		for (int i = 0; i < 4; i++)
-//		{
-//			int ny = cur.y + dy[i];
-//			int nx = cur.x + dy[i];
-//
-//			if (nx < Load || nx >= wid || ny < Load || ny <= hei)
-//			{
-//				continue;
-//			}
-//			if (Maze[ny][nx] == Wall)
-//			{
-//				continue;
-//			}
-//			int newCost = dist[cur.y][cur.x] + cost[ny][nx];
-//			if (newCost < dist[ny][nx])
-//			{
-//				dist[ny][nx] = newCost;
-//				prev[ny][nx] = { cur.x,cur.y };
-//				queue.push({ ny,nx,newCost });
-//			}
-//		}
-//	}
-//}
+void maze::StartDijkstra(Start start, Goal goal)
+{
+
+	const int INF = 1e9;
+
+	std::vector<std::vector<int>> dist(HEIGHT, std::vector<int>(WIDTH, INF));
+	std::priority_queue<Node, std::vector<Node>, Compare> queue;
+	dist[start.y][start.x] = 0;
+	queue.push({ start.x, start.y, 0 });
+
+	int dy[4] = { -1, 1, 0, 0 };
+	int dx[4] = { 0, 0, -1, 1 };
+
+	while (!queue.empty())
+	{
+		Node cur = queue.top(); queue.pop();
+		int y = cur.y;
+		int x = cur.x;
+
+		if (cur.cost > dist[y][x]) continue;
+		if (y == goal.y && x == goal.x) break;
+
+		for (int i = 0; i < 4; i++)
+		{
+			int ny = y + dy[i];
+			int nx = x + dx[i];
+
+			if (ny < 0 || ny >= HEIGHT || nx < 0 || nx >= WIDTH) continue;
+			if (Maze[ny][nx] == Wall) continue;
+
+			int cost = dist[y][x] + 1;
+
+			if (cost < dist[ny][nx])
+			{
+				dist[ny][nx] = cost;
+
+				prevPos[ny][nx] = { y, x };
+
+				queue.push({ nx, ny, cost });
+			}
+		}
+	}
+
+
+
+}
 
 void maze::AnimationDijkstra(const std::vector<std::pair<int, int>>& path)
 {
-
 	for (auto& p : path) {
 		Maze[p.first][p.second] = Path; // çïÇ≈ï`Ç©ÇÍÇÈ
 		Draw();
@@ -329,22 +317,19 @@ void maze::UpdateDijkstra()
 
 }
 
-std::vector<POINT> maze::buildPath(Start start, Goal goal)
+std::vector<std::pair<int, int>> maze::buildPath(int sx, int sy, int gx, int gy)
 {
-	std::vector<POINT> path;
-	const int X = 41;
-	const int Y = 41;
-	POINT prev[Y][X];
-	int cx = goalx, cy = goaly;
-	while (!(cx == start.x && cy == start.y))
+	std::vector<std::pair<int, int>> path;
+	int goaly = gy;
+	int goalx = gx;
+	while (!(goaly == sy && goalx == sx))
 	{
-		path.push_back({ cx,cy });
-		POINT p = prev[cx][cy];
-		cx = p.x;
-		cy = p.y;
+		path.push_back({ goaly,goalx });
+		auto p = prevPos[goaly][goalx];
+		goaly = p.first;
+		goalx = p.second;
 	}
-	path.push_back({ start.x,start.y });
+	path.push_back({ sy,sx });
 	std::reverse(path.begin(), path.end());
-
 	return path;
 }
