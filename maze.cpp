@@ -16,6 +16,7 @@ maze::maze(int w, int h)
 	HEIGHT = (h % 2 == 0) ? h + 1 : h;
 	Maze.assign(HEIGHT, std::vector<int>(WIDTH, Load));
 	prevPos.assign(HEIGHT, std::vector<std::pair<int, int>>(WIDTH, { -1,-1 }));
+	
 }
 maze::~maze()
 {
@@ -229,7 +230,7 @@ void maze::StartDijkstra(Start start, Goal goal)
 
 }
 
-void maze::AnimationDijkstra(const std::vector<std::pair<int, int>>& path)
+void maze::UpdateDijkstra(const std::vector<std::pair<int, int>>& path)
 {
 	//スタートからゴールまでの最短経路
 	for (auto& p : path) {
@@ -240,9 +241,173 @@ void maze::AnimationDijkstra(const std::vector<std::pair<int, int>>& path)
 	}
 }
 
+void maze::StartAstar(int sx,int sy,int gx,int gy)
+{
+	this->goalx = gx;
+	this->goaly = gy;
+	std::priority_queue<Node*, std::vector<Node*>, NodeCmp> openList;
+	close.assign(HEIGHT, std::vector<bool>(WIDTH, false));
+	Node* start = new Node{ sx, sy, 0, 0, 0};
+	start->h = abs(gx - sx) + abs(gy - sy);
+	start->f = start->g + start->h;
+
+	openList.push(start);
+	finished = false;
+
+	
+	
+}
+
+void maze::UpdateAstar()
+{
+	const int wid = 41;
+	const int hei = 41;
+	std::vector<std::pair<int, int>> path;
+	std::priority_queue<Node*, std::vector<Node*>, NodeCmp> openList;
+	if (finished || openList.empty()) return;
+	
+	bool closed[hei][wid] = { false };
+	Node* current = openList.top();
+	openList.pop();
+	
+	closed[current->y][current->x] = true;
+
+	if (current->x == goalx && current->y == goaly)
+	{
+		// ゴール到達
+		finished = true;
+
+		// 経路復元
+		path.clear();
+		Node* n = current;
+
+		while (n)
+		{
+			path.push_back({ n->x, n->y });
+			n = n->parent;
+		}
+		std::reverse(path.begin(), path.end());
+		return;
+	}
+
+	const int dx[4] = { 1,-1,0,0 };
+	const int dy[4] = { 0,0,1,-1 };
+
+	for (int i = 0; i < 4; i++)
+	{
+		int nx = current->x + dx[i];
+		int ny = current->y + dy[i];
+
+		if (nx < 0 || nx >= WIDTH || ny < 0 || ny >= HEIGHT) continue;
+		if (Maze[ny][nx] == 1) continue;
+		if (closed[ny][nx]) continue;
+
+		Node* next = new Node{ nx, ny };
+		next->g = current->g + 1;
+		next->h = abs(goalx - nx) + abs(goaly - ny);
+		next->f = next->g + next->h;
+		next->parent = current;
+
+		openList.push(next);
+	}
+}
+
+void maze::DrawAstarState()
+{
+	std::vector<POINT> path;
+	bool closed[41][41] = {false};
+	for (int y = 0; y < HEIGHT; y++)
+	{
+		for (int x = 0; x < WIDTH; x++)
+		{
+			if (closed[y][x])
+			{
+				DrawBox(x * DrawSize, y * DrawSize,
+					x * DrawSize + DrawSize, y * DrawSize + DrawSize,
+					GetColor(0, 0, 255), TRUE);
+			}
+		}
+	}
+	// path（赤）
+	for (auto& p : path)
+	{
+		DrawBox(p.x * DrawSize, p.y * DrawSize,
+			p.x * DrawSize + DrawSize, p.y * DrawSize + DrawSize,
+			GetColor(255, 0, 0), TRUE);
+	}
+}
 
 
+std::vector<POINT> maze::AStar(const std::vector<std::vector<int>>& maze, int sx, int sy, int gx, int gy)
+{
+	int wid = maze.size();
+    int hei = maze[0].size();
+	std::priority_queue<Node*, std::vector<Node*>, NodeCmp> openList;
+	std::vector<std::vector<bool>> closed(hei, std::vector<bool>(wid, false));
 
+	Node* start = new Node{ sx,sy,0,0,0 };
+
+	start->h = abs(gx - sx) + abs(gy - sy);
+	start->f = start->g + start->h;
+	openList.push(start);
+
+	Node* goalNode = nullptr;
+
+	while (!openList.empty())
+	{
+		Node* current = openList.top();
+		openList.pop();
+
+		if (current->x == gx && current->y == gy) {
+			goalNode = current;
+			break;
+		}
+
+		closed[current->y][current->x] = true;
+		const int dx[4] = { 1,-1,0,  0 };
+		const int dy[4] = { 0, 0,1, -1 };
+
+		for (int i = 0; i < 4; i++)
+		{
+			int nx = current->x + dx[i];
+			int ny = current->y + dy[i];
+
+			if (nx < 0 || nx >= wid || ny < 0 || ny >= hei)
+			{
+				continue;
+			}
+
+			if (maze[ny][nx] == 1)
+			{
+				continue;
+			}
+			if (closed[ny][nx])
+			{
+				continue;
+			}
+
+			Node* next = new Node{ nx,ny };
+			next->g = current->g + 1;
+			next->h = abs(gx - nx) + abs(gy - ny);
+			next->f = next->g + next->h;
+			next->parent = current;
+			openList.push(next);
+		}
+	}
+	
+	std::vector<POINT> path;
+	if (goalNode)
+	{
+		Node* n = goalNode;
+		while (n)
+		{
+			path.push_back({ n->x,n->y });
+			n = n->parent;
+		}
+		std::reverse(path.begin(), path.end());
+	}
+	return path;
+}
 
 std::vector<std::pair<int, int>> maze::buildPath(int sx, int sy, int gx, int gy)
 {

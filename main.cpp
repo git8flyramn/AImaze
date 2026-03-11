@@ -18,32 +18,41 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	SetDrawScreen(DX_SCREEN_BACK);
 	srand((unsigned int)time(NULL));
 	maze* MAZE = new maze(41, 41);
+	
 	Start start = { 2,2 };
 	Goal goal = { 39,39 };
 	//–À˜H¶¬
 	ClearDrawScreen();
 	MAZE->Initialize();
     MAZE->CreateMaze();
+	
 	//DFS‚Ìˆ—
-	MAZE->StartDFS();
+	//MAZE->StartDFS();
+		//A*‚Ìˆ—
+	std::vector<POINT> path = MAZE->AStar(MAZE->Maze, start.x, start.y, goal.x, goal.y);
+	
 	
 
 	   //ƒ_ƒCƒNƒXƒgƒ‰–@‚Ìˆ—
 		/*
 		MAZE->StartDijkstra(start, goal);
 		std::vector<std::pair<int, int>> path = MAZE->buildPath(start.x, start.y, goal.x, goal.y);
-		MAZE->AnimationDijkstra(path);
+		MAZE->UpdateDijkstra(path);
 		MAZE->Draw();*/
 	
 	
 
 	while (1)
 	{
-		
-		//–À˜H•`‰æ
-
-		MAZE->UpdateDFS();
+	   //A*‚Ìˆ—
 		MAZE->Draw();
+		for (auto& p : path) {
+			DrawBox(p.x * 12, p.y * 12, p.x * 12 + 12, p.y * 12 + 12, GetColor(255, 0, 0), TRUE);
+		}
+		//–À˜H•`‰æ
+		
+		/*MAZE->UpdateDFS();
+		MAZE->Draw();*/
 	
 		ScreenFlip();
 		WaitTimer(16);
