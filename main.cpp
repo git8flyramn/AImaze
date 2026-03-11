@@ -20,10 +20,9 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	maze* MAZE = new maze(41, 41);
 	/*Start start = { 2,2 };
 	Goal goal = { 39,39 };*/
-	//ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0
 	//–À˜H¶¬
-	
-	MAZE->Initialize();
+	ClearDrawScreen();
+    MAZE->Initialize();
 	MAZE->CreateMaze();
 	MAZE->StartDFS();
 	//
@@ -34,7 +33,7 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
 	while (1)
 	{
-		ClearDrawScreen();
+		
 		//–À˜H•`‰æ
 
 		MAZE->UpdateDFS();

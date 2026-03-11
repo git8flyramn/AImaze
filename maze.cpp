@@ -47,8 +47,8 @@ void maze::Initialize()
 void maze::Draw()
 {
 
-	Start start = { 1,2 };
-	Goal goal = { HEIGHT - 2 ,WIDTH - 2 };
+	Start start = { 1,1 };
+	Goal goal = { HEIGHT - 3 ,WIDTH - 3};
 	int WallColor = GetColor(0, 255, 0);
 	int LoadColor = GetColor(255, 255, 255);
 
@@ -129,15 +129,11 @@ void maze::CreateMaze()
 void maze::StartDFS()
 {
 	visited.assign(HEIGHT, std::vector<int>(WIDTH, 0));
-
-	goalx = WIDTH - 3;
-	goaly = HEIGHT - 3;
-
 	while (!st.empty())
 	{
 		st.pop();
 	}
-	st.push({ 2,2 });
+	st.push({ 1,1 });
 	visited[2][2] = 1;
 	dfsSearch = true;
 
@@ -225,8 +221,8 @@ void maze::UpdateDFS()
 		return;
 	}
 
-	const int dx[4] = { 2,-2,0, 0 };
-	const int dy[4] = { 0, 0,2,-2 };
+	const int dx[4] = { 1,-1,0, 0 };
+	const int dy[4] = { 0, 0,1,-1 };
 
 	bool moved = false;
 
