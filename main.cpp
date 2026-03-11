@@ -18,18 +18,24 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	SetDrawScreen(DX_SCREEN_BACK);
 	srand((unsigned int)time(NULL));
 	maze* MAZE = new maze(41, 41);
-	/*Start start = { 2,2 };
-	Goal goal = { 39,39 };*/
+	Start start = { 2,2 };
+	Goal goal = { 39,39 };
 	//迷路生成
 	ClearDrawScreen();
-    MAZE->Initialize();
-	MAZE->CreateMaze();
+	MAZE->Initialize();
+    MAZE->CreateMaze();
+	//DFSの処理
 	MAZE->StartDFS();
-	//
-	/*MAZE->StartDijkstra(start, goal);
-	std::vector<std::pair<int, int>> path = MAZE->buildPath(start.x, start.y, goal.x, goal.y);
-	MAZE->AnimationDijkstra(path);
-	MAZE->Draw();*/
+	
+
+	   //ダイクストラ法の処理
+		/*
+		MAZE->StartDijkstra(start, goal);
+		std::vector<std::pair<int, int>> path = MAZE->buildPath(start.x, start.y, goal.x, goal.y);
+		MAZE->AnimationDijkstra(path);
+		MAZE->Draw();*/
+	
+	
 
 	while (1)
 	{
@@ -38,7 +44,7 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
 		MAZE->UpdateDFS();
 		MAZE->Draw();
-		//MAZE->AnimationDijkstra(path);
+	
 		ScreenFlip();
 		WaitTimer(16);
 	}

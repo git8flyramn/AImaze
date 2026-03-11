@@ -258,8 +258,8 @@ void maze::StartDijkstra(Start start, Goal goal)
 	dist[start.y][start.x] = 0;
 	queue.push({ start.x, start.y, 0 });
 
-	int dy[4] = { -2, 2, 0, 0 };
-	int dx[4] = { 0, 0, -2, 2 };
+	int dy[4] = { -1, 1, 0, 0 };
+	int dx[4] = { 0, 0, -1, 1 };
 
 	while (!queue.empty())
 	{
