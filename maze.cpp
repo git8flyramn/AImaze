@@ -47,7 +47,7 @@ void maze::Initialize()
 void maze::Draw()
 {
 
-	Start start = { 2,2 };
+	Start start = { 1,2};
 	Goal goal = { HEIGHT - 2 ,WIDTH - 2 };
 	int WallColor = GetColor(0,255,0);
     int LoadColor = GetColor(255, 255, 255);
@@ -225,8 +225,8 @@ void maze::UpdateDFS()
 		return;
 	}
 
-	const int dx[4] = { 1,-1,0,0 };
-	const int dy[4] = { 0,0,1,-1 };
+	const int dx[4] = { 2,-2,0, 0 };
+	const int dy[4] = { 0, 0,2,-2 };
 
 	bool moved = false;
 
@@ -262,8 +262,8 @@ void maze::StartDijkstra(Start start, Goal goal)
 	dist[start.y][start.x] = 0;
 	queue.push({ start.x, start.y, 0 });
 
-	int dy[4] = { -1, 1, 0, 0 };
-	int dx[4] = { 0, 0, -1, 1 };
+	int dy[4] = { -2, 2, 0, 0 };
+	int dx[4] = { 0, 0, -2, 2 };
 
 	while (!queue.empty())
 	{
@@ -312,12 +312,7 @@ void maze::AnimationDijkstra(const std::vector<std::pair<int, int>>& path)
 
 
 
-void maze::UpdateDijkstra()
-{
 
-
-
-}
 
 std::vector<std::pair<int, int>> maze::buildPath(int sx, int sy, int gx, int gy)
 {
