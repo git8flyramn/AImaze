@@ -47,7 +47,7 @@ void maze::Initialize()
 void maze::Draw()
 {
 
-	Start start = { 2,2 };
+	Start start = { 1,1 };
 	Goal goal = { HEIGHT - 2 ,WIDTH - 2 };
 	int WallColor = GetColor(0,255,0);
     int LoadColor = GetColor(255, 255, 255);
@@ -304,7 +304,7 @@ void maze::AnimationDijkstra(const std::vector<std::pair<int, int>>& path)
 	//ÉXÉ^Å[ÉgÇ©ÇÁÉSÅ[ÉãÇ‹Ç≈ÇÃç≈íZåoòH
 	for (auto& p : path) {
 		Maze[p.first][p.second] = Path; // çïÇ≈ï`Ç©ÇÍÇÈ
-		//Draw();
+		Draw();
 		ScreenFlip();
 		WaitTimer(30);
 	}
@@ -312,12 +312,7 @@ void maze::AnimationDijkstra(const std::vector<std::pair<int, int>>& path)
 
 
 
-void maze::UpdateDijkstra()
-{
 
-
-
-}
 
 std::vector<std::pair<int, int>> maze::buildPath(int sx, int sy, int gx, int gy)
 {
