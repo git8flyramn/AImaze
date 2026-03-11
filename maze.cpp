@@ -301,6 +301,7 @@ void maze::StartDijkstra(Start start, Goal goal)
 
 void maze::AnimationDijkstra(const std::vector<std::pair<int, int>>& path)
 {
+	//スタートからゴールまでの最短経路
 	for (auto& p : path) {
 		Maze[p.first][p.second] = Path; // 黒で描かれる
 		Draw();
