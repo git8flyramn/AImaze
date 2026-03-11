@@ -47,7 +47,7 @@ void maze::Initialize()
 void maze::Draw()
 {
 
-	Start start = { 1,1 };
+	Start start = { 1,2};
 	Goal goal = { HEIGHT - 2 ,WIDTH - 2 };
 	int WallColor = GetColor(0,255,0);
     int LoadColor = GetColor(255, 255, 255);
@@ -262,8 +262,8 @@ void maze::StartDijkstra(Start start, Goal goal)
 	dist[start.y][start.x] = 0;
 	queue.push({ start.x, start.y, 0 });
 
-	int dy[4] = { -1, 1, 0, 0 };
-	int dx[4] = { 0, 0, -1, 1 };
+	int dy[4] = { -2, 2, 0, 0 };
+	int dx[4] = { 0, 0, -2, 2 };
 
 	while (!queue.empty())
 	{
