@@ -41,7 +41,6 @@ public:
 	void UpdateDFS();//アニメーションの更新
 	void StartDijkstra(Start start, Goal goal);
 	void AnimationDijkstra(const std::vector<std::pair<int, int>>& path);
-	void UpdateDijkstra();
 	std::vector<std::pair<int, int>> buildPath(int sx, int sy, int gx, int gy);
 private:
 	int WIDTH;
