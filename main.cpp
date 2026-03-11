@@ -24,17 +24,17 @@ int WINAPI WinMain(HINSTANCE hInstansce, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	//–À˜H¶¬
 	ClearDrawScreen();
 	MAZE->CreateMaze();
-	//MAZE->Draw();
-	//Maze->StartDFS();
-	MAZE->StartDijkstra(start,goal);
-	std::vector<std::pair<int, int>> path = MAZE->buildPath(start.x, start.y, goal.x, goal.y);
-	MAZE->AnimationDijkstra(path);
+	MAZE->Draw();
+	MAZE->StartDFS();
+	//MAZE->StartDijkstra(start,goal);
+	//std::vector<std::pair<int, int>> path = MAZE->buildPath(start.x, start.y, goal.x, goal.y);
+	
 	while (1)
 	{
 		//–À˜H•`‰æ
-		//MAZE->Draw();
-		//Maze->UpdateDFS();
 		
+		MAZE->UpdateDFS();
+		//MAZE->AnimationDijkstra(path);
 		ScreenFlip();
 		WaitTimer(16);
 	}

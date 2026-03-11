@@ -50,7 +50,6 @@ private:
 	std::vector<std::vector<int>> Maze;
 	std::vector<std::vector<int>>visited;
 	std::vector<std::vector<std::pair<int, int>>> prevPos;
-	
 	int DrawSize;
 	int Wall;
 	int Load;

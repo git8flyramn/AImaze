@@ -225,8 +225,8 @@ void maze::UpdateDFS()
 		return;
 	}
 
-	const int dx[4] = { 1,-1,0,0 };
-	const int dy[4] = { 0,0,1,-1 };
+	const int dx[4] = { 2,-2,0, 0 };
+	const int dy[4] = { 0, 0,2,-2 };
 
 	bool moved = false;
 
@@ -304,7 +304,7 @@ void maze::AnimationDijkstra(const std::vector<std::pair<int, int>>& path)
 	//スタートからゴールまでの最短経路
 	for (auto& p : path) {
 		Maze[p.first][p.second] = Path; // 黒で描かれる
-		Draw();
+		//Draw();
 		ScreenFlip();
 		WaitTimer(30);
 	}
